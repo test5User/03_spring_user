@@ -5,10 +5,7 @@ import by.itclass.model.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import static by.itclass.constants.AppConstants.*;
@@ -47,6 +44,18 @@ public class UserController {
 
     @PostMapping(SAVE_USER_URL)
     public String save(@ModelAttribute(name = USER_ATTR) User user) {
-        service.
+        service.addUser(user);
+        return "redirect:" + ALL_USERS_URL;
+    }
+
+    @GetMapping(UPD_USER_URL + "/{param}")
+    public ModelAndView upd(@PathVariable(name = "param") int id) {
+        return new ModelAndView(UPD_USER_PAGE, USER_ATTR, service.getById(id));
+    }
+
+    @PostMapping(SAVE_UPD_USER_URL)
+    public String saveUpd(@ModelAttribute(name = USER_ATTR) User user) {
+        service.update(user);
+        return "redirect:" + ALL_USERS_URL;
     }
 }

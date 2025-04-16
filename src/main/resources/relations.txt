@@ -1,0 +1,73 @@
+1. many-to-one
+
+    @Entity
+    @Table(name="orders")
+    class Order {
+    . . .
+    }
+
+    @Entity
+    @Table(name="orderItem")
+    class OrderItem {
+    . . .
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    Order order;
+    }
+
+2. one-to-many
+
+    @Entity
+    @Table(name="orderItem")
+    class OrderItem {
+    . . .
+    }
+
+    @Entity
+    @Table(name="orders")
+    class Order {
+    . . .
+    @OneToMany
+    @JoinColumn(name="order_id")
+    List<OrderItem> items
+    }
+
+3. many-to-many
+
+    @Entity
+    @Table(name="user")
+    User {
+    int id;
+    . . .
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="user_task",
+        joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"),
+        inverseJoinColumns=@JoinColumn(name="task_id", referencedColumnName="id"))
+    Set<Task> tasks;
+    }
+
+    @Entity
+    @Table(name="task")
+    Task {
+    int id;
+    . . .
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="user_task",
+        joinColumns=@JoinColumn(name="task_id", referencedColumnName="id"),
+        inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
+    Set<User> users;
+    }
+
+    task: id, . . .
+    user: id, . . .
+
+    user_task
+    user_id    task_id
+    1           1
+    1           3
+    2           1
+    2           2
+    2           4
+    3           3
+
+4. one-to-one

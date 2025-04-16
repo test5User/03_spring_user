@@ -34,4 +34,29 @@ public class UserDaoImpl implements UserDao {
             transaction.commit();
         }
     }
+
+    @Override
+    public void insertUser(User user) {
+        try (var session = factory.openSession()){
+            var transaction = session.beginTransaction();
+            session.persist(user);
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public User selectById(int id) {
+        try (var session = factory.openSession()){
+            return session.get(User.class, id);
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        try (var session = factory.openSession()){
+            var transaction = session.beginTransaction();
+            session.merge(user);
+            transaction.commit();
+        }
+    }
 }
